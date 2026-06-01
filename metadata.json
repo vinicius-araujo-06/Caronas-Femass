@@ -1,0 +1,6 @@
+{
+  "name": "Caronas FeMASS",
+  "description": "Aplicativo de caronas e divisão de Uber/99 voltado para estudantes da Faculdade Professor Miguel Ângelo da Silva Santos.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
