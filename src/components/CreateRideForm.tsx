@@ -316,7 +316,7 @@ export default function CreateRideForm({
         />
 
         {/* Map selection targeting controls */}
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <button
             type="button"
             onClick={() => setMapTargetMode('origin')}
@@ -389,7 +389,7 @@ export default function CreateRideForm({
         )}
 
         {/* Departure Time & Final Price Setup */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className="block text-[9px] font-bold text-slate-500 uppercase mb-1">Horário de Saída</label>
             <div className="relative">
@@ -405,7 +405,7 @@ export default function CreateRideForm({
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-slate-500 uppercase mb-1">
+            <label className="block text-[9px] font-bold text-slate-500 uppercase mb-1 truncate" title={type === 'carona' ? 'Contribuição (R$)' : 'Valor Total (R$)'}>
               {type === 'carona' ? 'Contribuição (R$)' : 'Valor Total p/ Dividir (R$)'}
             </label>
             <input
