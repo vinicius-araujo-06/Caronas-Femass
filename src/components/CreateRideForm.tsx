@@ -389,22 +389,22 @@ export default function CreateRideForm({
         )}
 
         {/* Departure Time & Final Price Setup */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full min-w-0">
+          <div className="w-full min-w-0">
             <label className="block text-[9px] font-bold text-slate-500 uppercase mb-1">Horário de Saída</label>
-            <div className="relative">
+            <div className="relative w-full min-w-0">
               <Clock className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
               <input
                 type="time"
                 value={departureTime}
                 onChange={(e) => setDepartureTime(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 text-slate-800 rounded-md focus:outline-none focus:border-black focus:ring-1 focus:ring-black font-bold"
+                className="w-full min-w-0 max-w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 text-slate-800 rounded-md focus:outline-none focus:border-black focus:ring-1 focus:ring-black font-bold box-border"
                 required
               />
             </div>
           </div>
 
-          <div>
+          <div className="w-full min-w-0">
             <label className="block text-[9px] font-bold text-slate-500 uppercase mb-1 truncate" title={type === 'carona' ? 'Contribuição (R$)' : 'Valor Total (R$)'}>
               {type === 'carona' ? 'Contribuição (R$)' : 'Valor Total p/ Dividir (R$)'}
             </label>
@@ -414,7 +414,7 @@ export default function CreateRideForm({
               placeholder="0,00"
               value={customPrice}
               onChange={(e) => handlePriceChange(e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 text-slate-800 rounded-md focus:outline-none focus:border-black focus:ring-1 focus:ring-black font-bold"
+              className="w-full min-w-0 max-w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 text-slate-800 rounded-md focus:outline-none focus:border-black focus:ring-1 focus:ring-black font-bold box-border"
               required
             />
             {type === 'uber' && (
