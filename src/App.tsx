@@ -464,20 +464,6 @@ export default function App() {
                       }}
                     />
 
-                    {/* Quick ride launcher card to switch modes */}
-                    <div className="flex items-center justify-between p-4 bg-slate-100 border border-slate-200 rounded-md shadow-sm">
-                      <div className="space-y-0.5">
-                        <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">Tem carro ou vai Rachar Uber?</span>
-                        <h3 className="text-xs font-bold text-slate-800 uppercase tracking-tight">Compartilhe sua rota com colegas!</h3>
-                      </div>
-                      <button
-                        onClick={() => setShowCreateForm(true)}
-                        className="py-2.5 px-3.5 bg-black border border-black text-white hover:bg-slate-850 transition-colors rounded-md shadow-sm flex items-center justify-center gap-1.5 text-[10px] font-bold uppercase tracking-wider"
-                      >
-                        <Plus className="h-4 w-4 text-white" />
-                        Publicar
-                      </button>
-                    </div>
 
                     {/* Main listings list */}
                     <RidesList 

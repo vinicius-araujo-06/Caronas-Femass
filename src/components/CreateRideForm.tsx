@@ -103,7 +103,26 @@ export default function CreateRideForm({
   };
 
   const applyPriceEstimation = (price: number) => {
-    setCustomPrice(price.toFixed(2));
+    setCustomPrice(price.toFixed(2).replace('.', ','));
+  };
+
+  const parseNormalizedPrice = (val: string) => {
+    const normalized = val.replace(',', '.');
+    const parsed = parseFloat(normalized);
+    return isNaN(parsed) ? 0 : parsed;
+  };
+
+  const handlePriceChange = (val: string) => {
+    // Permite apenas números e no máximo uma vírgula ou ponto como delimitador decimal
+    let cleaned = val.replace(/[^0-9.,]/g, '');
+    const separatorsCount = (cleaned.match(/[.,]/g) || []).length;
+    if (separatorsCount > 1) {
+      const firstSepIndex = cleaned.search(/[.,]/);
+      const sep = cleaned[firstSepIndex];
+      cleaned = cleaned.replace(/[.,]/g, '');
+      cleaned = cleaned.slice(0, firstSepIndex) + sep + cleaned.slice(firstSepIndex);
+    }
+    setCustomPrice(cleaned);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -118,9 +137,10 @@ export default function CreateRideForm({
       ? (currentStudent.carActiveSpots || Number(customSpots))
       : Number(customSpots);
 
+    const numericCustomPrice = parseNormalizedPrice(customPrice);
     const price = type === 'carona'
-      ? Number(customPrice)
-      : (Number(customPrice) / (spots + 1)); // Split cost among creator + spots
+      ? numericCustomPrice
+      : (numericCustomPrice / (spots + 1)); // Split cost among creator + spots
 
     const generatedTrip: Trip = {
       id: `trip_${Date.now()}`,
@@ -389,17 +409,17 @@ export default function CreateRideForm({
               {type === 'carona' ? 'Contribuição (R$)' : 'Valor Total p/ Dividir (R$)'}
             </label>
             <input
-              type="number"
-              step="0.50"
-              min="0"
+              type="text"
+              inputMode="decimal"
+              placeholder="0,00"
               value={customPrice}
-              onChange={(e) => setCustomPrice(e.target.value)}
+              onChange={(e) => handlePriceChange(e.target.value)}
               className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 text-slate-800 rounded-md focus:outline-none focus:border-black focus:ring-1 focus:ring-black font-bold"
               required
             />
             {type === 'uber' && (
               <span className="text-[8px] text-indigo-600 font-bold mt-1 block">
-                Individual: R$ {(Number(customPrice) / totalDividedSpots).toFixed(2)}
+                Individual: R$ {(parseNormalizedPrice(customPrice) / totalDividedSpots).toFixed(2)}
               </span>
             )}
           </div>

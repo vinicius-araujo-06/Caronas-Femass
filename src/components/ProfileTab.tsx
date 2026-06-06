@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Student } from '../types';
 import { 
   User, Car, Phone, ShieldCheck, Award, 
-  MapPin, LogOut, Check, Sparkles, TrendingDown, Leaf,
-  Key
+  MapPin, LogOut, Check, Sparkles, TrendingDown, Leaf
 } from 'lucide-react';
 
 interface ProfileTabProps {
@@ -22,44 +21,7 @@ export default function ProfileTab({ student, onLogout, onUpdateStudent }: Profi
 
   const [message, setMessage] = useState('');
   
-  // Custom API key states
-  const [customKey, setCustomKey] = useState('');
-  const [isKeySaved, setIsKeySaved] = useState(false);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedKey = localStorage.getItem('CUSTOM_GOOGLE_MAPS_API_KEY') || '';
-      setCustomKey(savedKey);
-      setIsKeySaved(Boolean(savedKey.trim()));
-    }
-  }, []);
-
-  const handleSaveKey = () => {
-    if (typeof window !== 'undefined') {
-      if (customKey.trim()) {
-        localStorage.setItem('CUSTOM_GOOGLE_MAPS_API_KEY', customKey.trim());
-        setIsKeySaved(true);
-        setMessage('VITE_GOOGLE_MAPS_PLATFORM_KEY salva! Recarregando a tela...');
-        setTimeout(() => {
-          window.location.reload();
-        }, 1200);
-      } else {
-        alert('Por favor digite uma chave de API válida.');
-      }
-    }
-  };
-
-  const handleClearKey = () => {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('CUSTOM_GOOGLE_MAPS_API_KEY');
-      setCustomKey('');
-      setIsKeySaved(false);
-      setMessage('Chave personalizada removida! Restaurando simulação padrão...');
-      setTimeout(() => {
-        window.location.reload();
-      }, 1200);
-    }
-  };
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -278,61 +240,7 @@ export default function ProfileTab({ student, onLogout, onUpdateStudent }: Profi
         )}
       </div>
 
-      {/* Google Maps Credentials Config (Pente Fino) */}
-      <div className="p-4 bg-slate-50 border border-slate-200 rounded-md space-y-3">
-        <div className="flex items-center gap-2">
-          <div className="p-2 bg-slate-250 text-slate-800 rounded-md border border-slate-3D">
-            <Key className="h-4 w-4" />
-          </div>
-          <div>
-            <span className="block text-[8px] text-slate-500 uppercase font-bold tracking-wider leading-none font-mono">Ajustes do Mapa</span>
-            <span className="text-xs font-bold text-slate-850">Chave do Google Maps</span>
-          </div>
-        </div>
 
-        <p className="text-[10px] text-slate-550 leading-relaxed font-semibold">
-          Para desfrutar de rotas de trânsito em tempo real, ruas precisas de Macaé e autocompletar automático ao digitar endereços, cole sua chave da plataforma abaixo:
-        </p>
-
-        <div className="space-y-2">
-          <input
-            type="password"
-            value={customKey}
-            onChange={(e) => setCustomKey(e.target.value)}
-            placeholder="Cole sua GOOGLE_MAPS_API_KEY aqui"
-            className="w-full text-xs font-mono bg-white border border-slate-200 rounded-md px-2.5 py-1.5 focus:outline-none focus:border-black focus:ring-1 focus:ring-black"
-          />
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={handleSaveKey}
-              className="flex-1 py-1.5 bg-slate-900 hover:bg-black text-white text-[9px] font-bold uppercase tracking-wider rounded transition"
-            >
-              Ativar Chave Real
-            </button>
-            {isKeySaved && (
-              <button
-                type="button"
-                onClick={handleClearKey}
-                className="py-1.5 px-3 bg-rose-50 border border-rose-200 text-rose-700 hover:bg-rose-100 text-[9px] font-bold uppercase tracking-wider rounded transition"
-              >
-                Limpar
-              </button>
-            )}
-          </div>
-        </div>
-
-        {isKeySaved ? (
-          <div className="text-[9px] text-emerald-700 font-bold bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200 flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 bg-emerald-500 rounded-full animate-ping" />
-            Chave Ativa! Toda a geolocalização e rotas são coordenadas em tempo real.
-          </div>
-        ) : (
-          <div className="text-[9px] text-slate-650 font-semibold bg-amber-50 px-2.5 py-1 rounded border border-amber-200/60 leading-normal">
-            Nenhuma chave pessoal salva. Utilizando o simulador inteligente integrado configurado para Macaé, RJ.
-          </div>
-        )}
-      </div>
 
       {/* Logout button */}
       <button

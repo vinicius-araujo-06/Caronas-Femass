@@ -118,9 +118,10 @@ export default function RideDetails({
   const waypointsSegment = activeStops.map(s => `${s.lat},${s.lng}`).join('|');
   const googleMapsDirectionsUrl = `https://www.google.com/maps/dir/?api=1&origin=${trip.origin.lat},${trip.origin.lng}&destination=${trip.destination.lat},${trip.destination.lng}${waypointsSegment ? `&waypoints=${encodeURIComponent(waypointsSegment)}` : ''}`;
 
-  // Direct redirection URL for individual apps (falls back gracefully)
-  const uberDeeplink = `https://m.uber.com/ul/?action=setPickup&pickup[latitude]=${trip.origin.lat}&pickup[longitude]=${trip.origin.lng}&dropoff[latitude]=${trip.destination.lat}&dropoff[longitude]=${trip.destination.lng}`;
-  const r99Deeplink = `https://99app.com/passagem-rapida/?pickup=${encodeURIComponent(trip.origin.name)}&dropoff=${encodeURIComponent(trip.destination.name)}`;
+  // Simple direct links to the main ride sharing portals (Web App / Sites)
+  // Users will input the copied addresses manually in their active app.
+  const uberWebPortalUrl = 'https://m.uber.com';
+  const r99WebPortalUrl = 'https://99app.com';
 
   return (
     <div className="bg-white rounded-md border border-slate-200 shadow-sm max-w-md mx-auto space-y-4 text-slate-850">
@@ -216,6 +217,36 @@ export default function RideDetails({
             </div>
           )}
         </div>
+
+        {/* Carona Navigation Launcher (For the driver) */}
+        {trip.type === 'carona' && isCreator && (
+          <div className="p-3.5 bg-emerald-50 border border-emerald-200 text-emerald-950 rounded-md space-y-2">
+            <div className="flex items-center justify-between border-b border-emerald-200 pb-1.5 font-sans">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 flex items-center gap-1">
+                {isFull ? '🟢 Carro Completo! Partir Agora?' : '🗺️ Rota da sua Carona no GPS'}
+              </span>
+              <span className={`text-[8px] font-mono font-bold px-1.5 py-0.5 rounded ${
+                isFull ? 'bg-emerald-100 text-emerald-700' : 'bg-emerald-100 text-emerald-850'
+              }`}>
+                {isFull ? 'Pronto p/ Rodar' : `${trip.availableSpots} vagas restando`}
+              </span>
+            </div>
+            <p className="text-[10px] text-emerald-800 leading-normal font-semibold font-sans">
+              {isFull 
+                ? 'Sua carona está com todas as vagas preenchidas! Clique no botão abaixo para abrir a rota otimizada diretamente no GPS (Google Maps) com todos os pontos de embarque/desembarque de seus passageiros calculados.'
+                : 'Abra a rota da sua carona diretamente no GPS (Google Maps) para navegar de forma interativa de sua origem ao destino, calculando as paradas/desvios planejados.'
+              }
+            </p>
+            <a
+              href={googleMapsDirectionsUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-[10px] uppercase font-bold tracking-wider flex items-center justify-center gap-1.5 text-center shadow-sm font-sans transition-all"
+            >
+              Abrir Rota no Mapa <ExternalLink className="h-3.5 w-3.5 text-white" />
+            </a>
+          </div>
+        )}
 
         {/* Ajustar Rota do Carro (Only for Driver of a Carona) */}
         {isCreator && trip.type === 'carona' && (
@@ -499,36 +530,42 @@ export default function RideDetails({
               </span>
             </div>
 
-            <p className="text-[9px] text-slate-350 leading-relaxed font-semibold">
-              Copie os endereços em sequência para colar no app da Uber/99 ou toque em uma das opções de redirecionamento abaixo:
-            </p>
+            <div className="space-y-1.5">
+              <p className="text-[9.5px] text-slate-300 leading-relaxed font-semibold">
+                Copie os endereços em sequência para colar no app da Uber/99 ou use um redirecionamento abaixo:
+              </p>
+              <div className="bg-amber-500/10 border border-amber-500/20 p-2 rounded text-[8px] text-amber-200 leading-normal font-sans">
+                💡 <strong>Dica de Uso:</strong> Use o botão <strong>"Abrir em nova aba"</strong> no topo para que seu navegador e celular gerenciem a abertura das rotas com facilidade.
+              </div>
+            </div>
 
-            {/* Direct Multi-Stop Deep links */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              <a
-                href={uberDeeplink}
-                target="_blank"
-                rel="noreferrer"
-                className="py-2.5 px-3 bg-white hover:bg-slate-100 text-black rounded-md text-[9px] uppercase font-bold tracking-wider flex items-center justify-center gap-1.5 text-center shadow-sm"
-              >
-                Abrir na Uber <ExternalLink className="h-3 w-3 text-slate-500" />
-              </a>
-              <a
-                href={r99Deeplink}
-                target="_blank"
-                rel="noreferrer"
-                className="py-2.5 px-3 bg-[#FFCC00] hover:bg-[#E6B800] text-black rounded-md text-[9px] uppercase font-bold tracking-wider flex items-center justify-center gap-1.5 text-center shadow-sm"
-              >
-                Abrir na 99 <ExternalLink className="h-3 w-3 text-slate-800" />
-              </a>
-              <a
-                href={googleMapsDirectionsUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="py-2.5 px-3 bg-emerald-500 hover:bg-emerald-600 text-slate-950 rounded-md text-[9px] uppercase font-bold tracking-wider flex items-center justify-center gap-1.5 text-center shadow-sm"
-              >
-                App de Rota GPS <ExternalLink className="h-3 w-3 text-slate-900" />
-              </a>
+            {/* Direct Multi-Stop Deep links & Easy Launch Cards */}
+            <div className="space-y-3">
+              {/* Simplified Platform Launchers */}
+              <div className="p-3.5 bg-white/5 border border-white/10 rounded-md space-y-2.5">
+                <span className="text-[10px] uppercase font-bold tracking-wider text-white block">🚀 Escolha seu Aplicativo de Corrida</span>
+                <p className="text-[9px] text-zinc-300 leading-normal">
+                  Abra o aplicativo abaixo de sua preferência e insira a rota manualmente usando os endereços da lista de cópia rápida abaixo.
+                </p>
+                <div className="grid grid-cols-2 gap-2 pt-1 font-sans">
+                  <a
+                    href={uberWebPortalUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="py-2.5 px-3 bg-white hover:bg-slate-100 text-black rounded text-[10px] uppercase font-bold tracking-wider flex items-center justify-center gap-1.5 text-center shadow-sm font-sans"
+                  >
+                    Abrir Uber <ExternalLink className="h-3 w-3 text-slate-600" />
+                  </a>
+                  <a
+                    href={r99WebPortalUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="py-2.5 px-3 bg-[#FFCC00] hover:bg-[#E6B800] text-black rounded text-[10px] uppercase font-bold tracking-wider flex items-center justify-center gap-1.5 text-center shadow-sm font-sans"
+                  >
+                    Abrir 99 <ExternalLink className="h-3 w-3 text-slate-800" />
+                  </a>
+                </div>
+              </div>
             </div>
 
             {/* Itinerary Copier list */}
