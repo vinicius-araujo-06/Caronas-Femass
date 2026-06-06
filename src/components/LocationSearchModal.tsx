@@ -421,8 +421,10 @@ export default function LocationSearchModal({
 
             </div>
 
-            {/* Always Visible Interactive Map Section (Uber style) */}
-            <div className="flex-1 flex flex-col relative h-[250px] sm:h-[300px]">
+            {/* Interactive Map Section (Uber style) - Collapsed/Hidden on mobile if typing to prevent screen crowding and keyboard overlaps */}
+            <div className={`flex flex-col relative transition-all overflow-hidden ${
+              searchQuery.trim() ? 'hidden sm:flex sm:h-[300px] sm:relative sm:flex-1' : 'flex-1 min-h-[160px] h-[220px] sm:h-[300px]'
+            }`}>
               <div className="absolute inset-0 z-0">
                 <MapComponent
                   origin={type === 'origin' ? selectedPoint : null}

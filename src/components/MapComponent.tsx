@@ -449,7 +449,7 @@ export default function MapComponent({
   // Rendering 100% REAL OpenStreetMap Map Fallback (Leaflet)
   if (bypassWithSimulation) {
     return (
-      <div className="relative w-full h-[320px] md:h-[400px] border border-slate-200 rounded-md overflow-hidden shadow-inner flex flex-col justify-between">
+      <div className="relative w-full h-[220px] sm:h-[320px] md:h-[400px] border border-slate-200 rounded-md overflow-hidden shadow-inner flex flex-col justify-between">
         {/* Real Dynamic Interactive Map Div Container */}
         <div ref={leafletContainerRef} className="absolute inset-0 z-0 bg-slate-100" />
 
@@ -482,7 +482,7 @@ export default function MapComponent({
               </div>
               <div className="text-right flex-shrink-0 bg-slate-50 p-1.5 rounded border border-slate-100">
                 <span className="block text-xs font-black text-black uppercase tracking-wider">≈ {simDuration} min</span>
-                <span className="block text-[9px] text-slate-700 font-bold">{simDistance} km</span>
+                <span className="block text-[9px] text-slate-705 font-bold">{simDistance} km</span>
               </div>
             </div>
           );
@@ -492,7 +492,7 @@ export default function MapComponent({
         {hasValidKey && (
           <button
             onClick={() => setBypassWithSimulation(false)}
-            className="absolute bottom-3 right-3 z-[1000] bg-black text-white hover:bg-slate-800 px-2 rounded-md py-1 text-[8.5px] uppercase font-black tracking-wider shadow"
+            className="absolute top-3 right-3 z-[1000] bg-black text-white hover:bg-slate-800 px-2 rounded-md py-1 text-[8.5px] uppercase font-black tracking-wider shadow"
           >
             Mudar p/ Google Maps
           </button>
@@ -503,7 +503,7 @@ export default function MapComponent({
 
   // Real Google Maps View
   return (
-    <div className="relative w-full h-[320px] md:h-[400px] rounded-md overflow-hidden shadow border border-slate-200">
+    <div className="relative w-full h-[220px] sm:h-[320px] md:h-[400px] rounded-md overflow-hidden shadow border border-slate-200">
       <APIProvider apiKey={API_KEY} version="weekly">
         <Map
           defaultCenter={FAMAS_COORDINATES}
@@ -558,7 +558,7 @@ export default function MapComponent({
         const distanceVal = googleMetrics?.distanceKm ?? calculateDistanceKm(activeOrigin.lat, activeOrigin.lng, activeDestination.lat, activeDestination.lng);
         const durationVal = googleMetrics?.durationMin ?? calculateDurationMin(distanceVal);
         return (
-          <div className="absolute bottom-14 left-3 right-3 z-25 bg-white text-slate-900 p-3 rounded-md shadow-md border border-slate-200 flex items-center justify-between animate-fadeIn">
+          <div className="absolute bottom-3 left-3 right-3 z-25 bg-white text-slate-900 p-3 rounded-md shadow-md border border-slate-200 flex items-center justify-between animate-fadeIn">
             <div className="flex items-center gap-2">
               <div className="p-1.5 bg-slate-150 rounded text-slate-900 border border-slate-200">
                 <Navigation className="h-3.5 w-3.5 animate-pulse" />
@@ -584,7 +584,7 @@ export default function MapComponent({
 
       <button
         onClick={() => setBypassWithSimulation(true)}
-        className="absolute bottom-3 right-3 z-20 bg-white hover:bg-slate-50 text-slate-700 hover:text-black border border-slate-200 px-2.5 py-1.5 rounded-md text-[9px] uppercase font-bold tracking-wider shadow-sm flex items-center gap-1 transition-all"
+        className="absolute top-3 right-3 z-20 bg-white hover:bg-slate-50 text-slate-700 hover:text-black border border-slate-200 px-2.5 py-1.5 rounded-md text-[9px] uppercase font-bold tracking-wider shadow-sm flex items-center gap-1 transition-all"
       >
         <Shield className="h-3 w-3 text-slate-800" />
         Alternar para OSM-Real
