@@ -23,7 +23,9 @@ export const MACAE_NEIGHBORHOODS: LocationPoint[] = [
   { name: 'Sol e Mar', address: 'Bairro Sol e Mar, Macaé - RJ', lat: -22.3940, lng: -41.8090 },
   { name: 'Barra de Macaé', address: 'Bairro Barra de Macaé, Macaé - RJ', lat: -22.3610, lng: -41.7690 },
   { name: 'Vale das Palmeiras', address: 'Bairro Vale das Palmeiras, Macaé - RJ', lat: -22.3955, lng: -41.8145 },
-  { name: 'Alto dos Cajueiros', address: 'Bairro Alto dos Cajueiros, Macaé - RJ', lat: -22.3850, lng: -41.7890 }
+  { name: 'Alto dos Cajueiros', address: 'Bairro Alto dos Cajueiros, Macaé - RJ', lat: -22.3850, lng: -41.7890 },
+  { name: 'Imburo', address: 'Estrada do Imburo, Macaé - RJ (Zona Rural/Norte)', lat: -22.3276, lng: -41.7611 },
+  { name: 'Glicério', address: 'Distrito de Glicério, Macaé - RJ (Região Serrana)', lat: -22.2470, lng: -42.0550 }
 ];
 
 interface LocationSearchModalProps {
