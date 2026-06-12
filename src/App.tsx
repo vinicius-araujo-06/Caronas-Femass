@@ -23,13 +23,35 @@ export default function App() {
   // Authentication & Profile States
   const [currentStudent, setCurrentStudent] = useState<Student | null>(() => {
     const saved = localStorage.getItem('uniride_user');
-    return saved ? JSON.parse(saved) : null;
+    if (saved) {
+      const parsed = JSON.parse(saved) as Student;
+      // If student is one of the old mock profiles, clear session so they can pick a fresh new one
+      const oldNames = ['Mateus Oliveira', 'Isabella Rocha', 'Guilherme Santos', 'Beatriz Costa', 'Felipe Dias'];
+      if (oldNames.includes(parsed.name)) {
+        localStorage.removeItem('uniride_user');
+        return null;
+      }
+      return parsed;
+    }
+    return null;
   });
 
   // Active trips list (loaded from LocalStorage or pre-populated from Mock data)
   const [trips, setTrips] = useState<Trip[]>(() => {
     const saved = localStorage.getItem('uniride_trips');
-    return saved ? JSON.parse(saved) : MOCK_INITIAL_TRIPS;
+    if (saved) {
+      const parsed = JSON.parse(saved) as Trip[];
+      const oldNames = ['Mateus Oliveira', 'Isabella Rocha', 'Guilherme Santos', 'Beatriz Costa', 'Felipe Dias'];
+      const hasOldNames = parsed.some(t => 
+        oldNames.includes(t.creatorName) || 
+        t.passengers.some(p => oldNames.includes(p.name)) ||
+        t.messages.some(m => oldNames.includes(m.senderName))
+      );
+      if (!hasOldNames) {
+        return parsed;
+      }
+    }
+    return MOCK_INITIAL_TRIPS;
   });
 
   // Navigation states
